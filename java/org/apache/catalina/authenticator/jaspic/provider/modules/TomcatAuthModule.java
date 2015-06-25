@@ -28,6 +28,9 @@ import javax.security.auth.message.module.ServerAuthModule;
 import org.apache.catalina.authenticator.jaspic.MessageInfoImpl;
 import org.apache.tomcat.util.res.StringManager;
 
+/**
+ * Base class for JASPIC authentication modules.
+ */
 public abstract class TomcatAuthModule implements ServerAuthModule {
 
     public static final String REALM_NAME = "javax.servlet.http.realmName";
@@ -65,6 +68,17 @@ public abstract class TomcatAuthModule implements ServerAuthModule {
         return Optional.of(realmName).orElse(DEFAULT_REALM_NAME);
     }
 
+
+    /**
+     * Every subclass must extend this method in order to be initialized.
+     * Firstly, we initialize abstract module, then subclasses.
+     *
+     * @param requestPolicy
+     * @param responsePolicy
+     * @param handler
+     * @param options
+     * @throws AuthException
+     */
     @SuppressWarnings("rawtypes")
     public abstract void initializeModule(MessagePolicy requestPolicy,
             MessagePolicy responsePolicy, CallbackHandler handler, Map options)
