@@ -146,14 +146,7 @@ public class FormAuthModule extends TomcatAuthModule {
             return submitSavedRequest(clientSubject, request, response);
         }
 
-        String contextPath = request.getContextPath();
-        String requestURI = request.getDecodedRequestURI();
-
-        // Is this the action request from the login page?
-        boolean loginAction = requestURI.startsWith(contextPath)
-                && requestURI.endsWith(Constants.FORM_ACTION);
-
-        if (!loginAction) {
+        if (!isLoginActionRequest(request)) {
             return handleNoLoginAction(request, response);
         }
 
@@ -597,10 +590,11 @@ public class FormAuthModule extends TomcatAuthModule {
         SavedRequest saved = new SavedRequest();
         Cookie cookies[] = request.getCookies();
         if (cookies != null) {
-            for (int i = 0; i < cookies.length; i++) {
-                saved.addCookie(cookies[i]);
+            for (Cookie cookie : cookies) {
+                saved.addCookie(cookie);
             }
         }
+
         Enumeration<String> names = request.getHeaderNames();
         while (names.hasMoreElements()) {
             String name = names.nextElement();
@@ -666,4 +660,12 @@ public class FormAuthModule extends TomcatAuthModule {
         return (sb.toString());
 
     }
+
+
+    private boolean isLoginActionRequest(Request request) {
+        String contextPath = request.getContextPath();
+        String requestURI = request.getDecodedRequestURI();
+        return requestURI.startsWith(contextPath) && requestURI.endsWith(Constants.FORM_ACTION);
+    }
+
 }
