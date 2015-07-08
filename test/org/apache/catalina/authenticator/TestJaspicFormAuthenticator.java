@@ -231,6 +231,7 @@ public class TestJaspicFormAuthenticator extends TomcatBaseTest {
     // but there is not need to replicate all the scenarios above.
 
     @Test
+    @Ignore("Session freezing is not suppported yet")
     public void testNoChangedSessidWithCookies() throws Exception {
         doTest("GET", "GET", NO_100_CONTINUE, CLIENT_USE_COOKIES, SERVER_USE_COOKIES,
                 SERVER_FREEZE_SESSID);
@@ -238,6 +239,7 @@ public class TestJaspicFormAuthenticator extends TomcatBaseTest {
 
 
     @Test
+    @Ignore("Session freezing is not suppported yet")
     public void testNoChangedSessidWithoutCookies() throws Exception {
         doTest("GET", "GET", NO_100_CONTINUE, CLIENT_NO_COOKIES, SERVER_USE_COOKIES,
                 SERVER_FREEZE_SESSID);
@@ -287,7 +289,7 @@ public class TestJaspicFormAuthenticator extends TomcatBaseTest {
 
 
     @Test
-    @Ignore
+    @Ignore("Execution of this test is too long. We need to find some workaround")
     public void testTimeoutWithoutCookies() throws Exception {
         String protectedUri = doTest("GET", "GET", NO_100_CONTINUE, CLIENT_NO_COOKIES,
                 SERVER_USE_COOKIES, SERVER_FREEZE_SESSID);
@@ -373,8 +375,8 @@ public class TestJaspicFormAuthenticator extends TomcatBaseTest {
             newSessionId = client.extractPathSessionId(protectedUri);
         }
         boolean sessionIdIsChanged = !(originalSessionId.equals(newSessionId));
-        // TODO implement this option
-        // assertTrue(sessionIdIsChanged == serverWillChangeSessid);
+
+        assertTrue(sessionIdIsChanged == serverWillChangeSessid);
         client.reset();
 
         // Subsequent requests - keep accessing the protected resource
