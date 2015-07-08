@@ -37,7 +37,6 @@ import org.junit.Test;
 import org.apache.catalina.Context;
 import org.apache.catalina.authenticator.jaspic.JaspicAuthenticator;
 import org.apache.catalina.authenticator.jaspic.provider.TomcatAuthConfigProvider;
-import org.apache.catalina.connector.Request;
 import org.apache.catalina.startup.TesterMapRealm;
 import org.apache.catalina.startup.TesterServlet;
 import org.apache.catalina.startup.Tomcat;
@@ -199,13 +198,5 @@ public class TestJaspicBasicAuthenticator extends TomcatBaseTest {
         testResponse.setResponseCode(responseCode);
         testResponse.setHeaders(responseHeaders);
         return testResponse;
-    }
-
-    private static class TesterRequest extends Request {
-
-        @Override
-        public String getRemoteAddr() {
-            return "127.0.0.1";
-        }
     }
 }
