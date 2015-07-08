@@ -118,10 +118,10 @@ public class FormAuthModule extends TomcatAuthModule {
         }
 
         if (!isLoginActionRequest(request)) {
-            return handleNoLoginAction(request, response);
+            return handleRedirectToLoginPage(request, response);
         }
 
-        return handleLoginAction(request, response);
+        return handleLoginFormAction(request, response);
     }
 
 
@@ -201,7 +201,7 @@ public class FormAuthModule extends TomcatAuthModule {
      * @return
      * @throws IOException
      */
-    private AuthStatus handleNoLoginAction(Request request, HttpServletResponse response)
+    private AuthStatus handleRedirectToLoginPage(Request request, HttpServletResponse response)
             throws IOException {
         Session session = request.getSessionInternal(true);
         if (log.isDebugEnabled()) {
@@ -230,7 +230,7 @@ public class FormAuthModule extends TomcatAuthModule {
      * @return
      * @throws IOException
      */
-    private AuthStatus handleLoginAction(Request request, HttpServletResponse response)
+    private AuthStatus handleLoginFormAction(Request request, HttpServletResponse response)
             throws IOException {
 
         request.getResponse().sendAcknowledgement();
