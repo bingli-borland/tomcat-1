@@ -19,7 +19,6 @@ package org.apache.catalina.authenticator.jaspic.provider.modules;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
@@ -52,7 +51,7 @@ public abstract class TomcatAuthModule implements ServerAuthModule {
      */
     protected static final StringManager sm = StringManager.getManager(TomcatAuthModule.class);
 
-    protected String realmName;
+    protected String realmName = DEFAULT_REALM_NAME;
 
     protected CallbackHandler handler;
 
@@ -77,16 +76,23 @@ public abstract class TomcatAuthModule implements ServerAuthModule {
     public final void initialize(MessagePolicy requestPolicy, MessagePolicy responsePolicy,
             CallbackHandler handler, Map options) throws AuthException {
         this.handler = handler;
-        this.realmName = (String) options.get(REALM_NAME);
+        setRealmName((String) options.get(REALM_NAME));
         initializeModule(requestPolicy, responsePolicy, handler, options);
     }
 
 
     public String getRealmName() {
-        return Optional.ofNullable(realmName).orElse(DEFAULT_REALM_NAME);
+        return realmName;
     }
 
 
+    public void setRealmName(String realmName) {
+        if (realmName == null) {
+            realmName = DEFAULT_REALM_NAME;
+            return;
+        }
+        this.realmName = realmName;
+    }
     /**
      * Every subclass must extend this method in order to be initialized.
      * Firstly, we initialize abstract module, then subclasses.
