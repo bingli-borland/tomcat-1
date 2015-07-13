@@ -71,7 +71,7 @@ public abstract class TomcatAuthModule implements ServerAuthModule {
     }
 
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public final void initialize(MessagePolicy requestPolicy, MessagePolicy responsePolicy,
             CallbackHandler handler, Map options) throws AuthException {
@@ -103,9 +103,8 @@ public abstract class TomcatAuthModule implements ServerAuthModule {
      * @param options
      * @throws AuthException
      */
-    @SuppressWarnings("rawtypes")
     public abstract void initializeModule(MessagePolicy requestPolicy,
-            MessagePolicy responsePolicy, CallbackHandler handler, Map options)
+            MessagePolicy responsePolicy, CallbackHandler handler, Map<String, String> options)
             throws AuthException;
 
 

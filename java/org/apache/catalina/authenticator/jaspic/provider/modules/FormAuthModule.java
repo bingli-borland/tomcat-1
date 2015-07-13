@@ -80,10 +80,12 @@ public class FormAuthModule extends TomcatAuthModule {
     }
 
 
-    @SuppressWarnings("rawtypes")
     @Override
     public void initializeModule(MessagePolicy requestPolicy, MessagePolicy responsePolicy,
-            CallbackHandler handler, Map options) throws AuthException {
+            CallbackHandler handler, Map<String, String> options) throws AuthException {
+        this.characterEncoding = options.get("characterEncoding");
+        this.changeSessionIdOnAuthenication = Boolean.parseBoolean(options.get("changeSessionIdOnAuthentication"));
+        this.landingPage = options.get("landingPage");
     }
 
 
@@ -124,7 +126,7 @@ public class FormAuthModule extends TomcatAuthModule {
         return handleLoginFormAction(request, response);
     }
 
-
+    // TODO Extract common patterns in processing cached principal and cached credentials
     private AuthStatus handleSavedCredentials(Subject clientSubject, Request request,
             HttpServletResponse response) throws IOException, UnsupportedCallbackException {
         Session session = request.getSessionInternal(true);
