@@ -58,6 +58,7 @@ public abstract class TomcatAuthModule implements ServerAuthModule {
     protected Context context;
 
     protected boolean cachePrincipalsInSession = true;
+    protected boolean cache = true;
 
 
     public TomcatAuthModule(Context context) {
@@ -76,6 +77,10 @@ public abstract class TomcatAuthModule implements ServerAuthModule {
     public final void initialize(MessagePolicy requestPolicy, MessagePolicy responsePolicy,
             CallbackHandler handler, Map options) throws AuthException {
         this.handler = handler;
+        this.cachePrincipalsInSession = (Boolean.parseBoolean((String) options
+                .get("changeSessionIdOnAuthentication")));
+        this.cache  = (Boolean.parseBoolean((String) options
+                .get("cache")));
         setRealmName((String) options.get(REALM_NAME));
         initializeModule(requestPolicy, responsePolicy, handler, options);
     }
